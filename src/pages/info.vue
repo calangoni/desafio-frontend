@@ -1,26 +1,26 @@
 <template>
   <div>
     <div style="background-color: #2c3e50; height: 300px; position: relative;"></div>
-    <q-btn id="backbutton" round icon="keyboard_arrow_left" color="white" text-color="black" size="sm" @click="$router.push('/')" />
+    <q-btn id="backbutton" round icon="fas fa-angle-left" color="white" text-color="black" size="sm" @click="$router.push('/')" />
     <div id="infocard" class="shadow-2" v-if="candidate">
-      <div style="background-color: #f2f2f2; height: 150px; border-radius: 5px 5px 0 0; border: 2px solid grey; border-width: 0 0 2px 0; position: relative;"></div>
+      <div style="background-color: #f2f2f2; height: 150px; border-radius: 5px 5px 0 0; border: 2px solid #dfdfdf; border-width: 0 0 2px 0; position: relative;"></div>
       <div id="infocardphoto" class="flex justify-center items-center">
         <q-spinner v-if="loadingImage" color="teal-4" size="40px" />
         <img @load="() => { loadingImage = false }" :class="{hidden: loadingImage}" style="border-radius: 50%; width: 97%; height: 97%;" :src="candidate.picture.large" alt="">
       </div>
-      <div style="text-align: center; padding-top: 100px;">{{firstLine[displayedInfoIndex]}}</div>
-      <div style="text-align: center;">{{secondLine}}</div>
+      <div class="firstLine">{{firstLine[displayedInfoIndex]}}</div>
+      <div class="secondLine">{{secondLine}}</div>
       <div class="row justify-center" style="font-size: 220%;">
-        <a @mouseenter="selecionar('person')"><q-icon :class="{cursorLink: true, activeInfo: displayedInfoIndex === 0}" name="person" /></a>
-        <span style="width: 10px;"></span>
-        <a @mouseenter="selecionar('email')"><q-icon :class="{cursorLink: true, activeInfo: displayedInfoIndex === 1}" name="mail" /></a>
-        <span style="width: 10px;"></span>
-        <a @mouseenter="selecionar('date')"><q-icon :class="{cursorLink: true, activeInfo: displayedInfoIndex === 2}" name="date_range" /></a>
-        <span style="width: 10px;"></span>
+        <a @mouseenter="selecionar('person')"><q-icon :class="{cursorLink: true, activeInfo: displayedInfoIndex === 0}" name="far fa-user" /></a>
+        <span class="iconSpacing"></span>
+        <a @mouseenter="selecionar('email')"><q-icon :class="{cursorLink: true, activeInfo: displayedInfoIndex === 1}" name="far fa-envelope" /></a>
+        <span class="iconSpacing"></span>
+        <a @mouseenter="selecionar('date')"><q-icon :class="{cursorLink: true, activeInfo: displayedInfoIndex === 2}" name="far fa-calendar-alt" /></a>
+        <span class="iconSpacing"></span>
         <a @mouseenter="selecionar('location')"><q-icon :class="{cursorLink: true, activeInfo: displayedInfoIndex === 3}" name="map" /></a>
-        <span style="width: 10px;"></span>
+        <span class="iconSpacing"></span>
         <a @mouseenter="selecionar('phone')"><q-icon :class="{cursorLink: true, activeInfo: displayedInfoIndex === 4}" name="phone" /></a>
-        <span style="width: 10px;"></span>
+        <span class="iconSpacing"></span>
         <a @mouseenter="selecionar('secret')"><q-icon :class="{cursorLink: true, activeInfo: displayedInfoIndex === 5}" name="vpn_key" /></a>
       </div>
     </div>
@@ -121,16 +121,32 @@ export default {
     position: absolute
     left: 0
     right: 0
-    top: 50px
+    top: 30px
     margin-left: auto
     margin-right: auto
-    width: 180px
+    width: 200px
+    height: 200px
     border: 1px solid grey
     background-color white
-    height: 180px
     border-radius: 50%
 
   .activeInfo
     color var(--q-color-secondary)
+
+  .firstLine
+    color #9b9b9b
+    font-size: 120%
+    text-align: center
+    padding-top: 100px
+
+  .secondLine
+    color: #4e4e4e
+    font-size: 200%
+    font-weight: 500
+    text-align: center
+    padding-bottom: 40px
+
+  .iconSpacing
+    width: 30px
 
 </style>

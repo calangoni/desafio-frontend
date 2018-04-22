@@ -8,7 +8,8 @@ const routes = [
   },
 
   {
-    path: '/list/:type',
+    path: '/list/:listingName',
+    props: true,
     component: () => import('pages/index')
   },
 
