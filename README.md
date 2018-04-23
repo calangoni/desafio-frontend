@@ -1,3 +1,9 @@
-# Quasar App
+# Desafio front-end
 
-> WIP
+Developed using Vue.js and Quasar-Framework.
+
+To test the app:
+
+> npm install
+
+> npm start
