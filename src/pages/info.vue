@@ -8,7 +8,7 @@
         <q-spinner v-if="loadingImage" color="teal-4" size="40px" />
         <img @load="() => { loadingImage = false }" :class="{hidden: loadingImage}" style="border-radius: 50%; width: 97%; height: 97%;" :src="candidate.picture.large" alt="">
       </div>
-      <div class="firstLine">{{firstLine[displayedInfoIndex]}}</div>
+      <div class="firstLine">{{firstLine}}</div>
       <div class="secondLine">{{secondLine}}</div>
       <div class="row justify-center" style="font-size: 220%;">
         <a @mouseenter="selecionar('person')"><q-icon :class="{cursorLink: true, activeInfo: displayedInfoIndex === 0}" name="far fa-user" /></a>
@@ -33,27 +33,14 @@ export default {
   data () {
     return {
       candidate: null,
-      firstLine: [
-        'Hi, My name is',
-        'My email address is',
-        'My birthday is',
-        'My address is',
-        'My phone number is',
-        'My password is'
-      ],
+      firstLine: '',
       secondLine: '',
       displayedInfoIndex: 0,
       loadingImage: false
     }
   },
   mounted () {
-    /* eslint-disable */
-    // console.log('this.$store.state', this.$store.state)
-    // console.log('this.$store.state keys', Object.keys(this.$store.state))
-    // console.log('this.$store.state.example', this.$store.state.example)
-    // console.log('this.$store.state.person', this.$store.state.person)
-    // console.log('this.$store.state.example.person', this.$store.state.example.person)
-    this.candidate = this.$store.state.example.person
+    this.candidate = this.$store.state.candidates.person
     if (!this.candidate) {
       this.$router.push('/')
       return
@@ -65,30 +52,31 @@ export default {
     selecionar (type) {
       if (type === 'person') {
         this.displayedInfoIndex = 0
+        this.firstLine = this.$t('My_name')
         this.secondLine = this.candidate.name.full
-      }
-      else if (type === 'email') {
+      } else if (type === 'email') {
         this.displayedInfoIndex = 1
+        this.firstLine = this.$t('My_email')
         this.secondLine = this.candidate.email
-      }
-      else if (type === 'date') {
+      } else if (type === 'date') {
         this.displayedInfoIndex = 2
+        this.firstLine = this.$t('My_birthday')
         this.secondLine = this.candidate.dob.toLocaleDateString()
-      }
-      else if (type === 'location') {
+      } else if (type === 'location') {
         this.displayedInfoIndex = 3
+        this.firstLine = this.$t('My_address')
         this.secondLine = this.candidate.location.street
-      }
-      else if (type === 'phone') {
+      } else if (type === 'phone') {
         this.displayedInfoIndex = 4
+        this.firstLine = this.$t('My_phone')
         this.secondLine = this.candidate.phone
-      }
-      else if (type === 'secret') {
+      } else if (type === 'secret') {
         this.displayedInfoIndex = 5
+        this.firstLine = this.$t('My_password')
         this.secondLine = this.candidate.login.password
-      }
-      else {
+      } else {
         this.displayedInfoIndex = 0
+        this.firstLine = this.$t('My_name')
         this.secondLine = this.candidate.name.first
       }
     }

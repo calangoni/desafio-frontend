@@ -7,14 +7,15 @@
           <img src="statics/logoZup.png" style="margin-top: 10px;">
         </div>
         <div>
-          <q-search id="searchbar" inverted color="white" v-model="textSearch" :debounce="300" style="width: 700px;" />
+          <q-search id="searchbar" :placeholder="$t('Search')" inverted color="white" v-model="textSearch" :debounce="300" style="width: 700px;" />
         </div>
         <div>
-          <q-btn size="lg" icon="account_circle" flat round>
+          <q-btn size="md" flat round>
+            <q-icon name="account_circle" style="font-size: 40px;" />
             <q-popover>
               <q-list>
-                <q-item v-close-overlay>
-                  <img src="https://randomuser.me/api/portraits/thumb/men/62.jpg" alt="Account photo" style="border-radius: 50%;">
+                <q-item>
+                  <img :src="accountImage" alt="Account photo" style="border-radius: 50%;">
                 </q-item>
               </q-list>
             </q-popover>
@@ -27,15 +28,15 @@
       <q-list no-border link inset-delimiter>
         <q-item link to="/list/all" :class="{activeList: listingName === 'all'}">
           <q-item-side icon="select_all" />
-          <q-item-main label="Todos" />
+          <q-item-main :label="$t('All')" />
         </q-item>
         <q-item link to="/list/done" :class="{activeList: listingName === 'done'}">
           <q-item-side icon="done_all" />
-          <q-item-main label="Atendidos" />
+          <q-item-main :label="$t('Done')" />
         </q-item>
         <q-item link to="/list/deleted" :class="{activeList: listingName === 'deleted'}">
           <q-item-side icon="delete_sweep" />
-          <q-item-main label="Lixeira" />
+          <q-item-main :label="$t('Trash')" />
         </q-item>
       </q-list>
     </q-layout-drawer>
@@ -44,7 +45,7 @@
 
       <div class="flex flex-center">
         <div style="width: 1000px; max-width: 90vw; margin-top: 60px; color: #ababab;" class="shadow-2 flex">
-          <div v-for="person in $store.state.example.displayedItems" :key="person.email" class="row person-row items-center no-wrap bg-white">
+          <div v-for="person in $store.state.candidates.displayedItems" :key="person.email" class="row person-row items-center no-wrap bg-white">
             <div class="col-1 row inline items-center cursorLink fullHeight" @click="viewDetails(person)">
               <img style="border-radius: 50%; margin-left: 10px; margin-top: 3px;" :src="person.picture.thumbnail" :alt="person.name.first">
             </div>
@@ -67,8 +68,8 @@
       <br>
       <br>
       <div class="flex flex-center">
-        <q-pagination v-if="$store.state.example.maxPage > 1" @input="changePage" v-model="pageNumber" :max="$store.state.example.maxPage" />
-        <span v-if="$store.state.example.displayedItems.length === 0">(no results)</span>
+        <q-pagination v-if="$store.state.candidates.maxPage > 1" @input="changePage" v-model="pageNumber" :max="$store.state.candidates.maxPage" />
+        <span v-if="$store.state.candidates.displayedItems.length === 0">({{$t('no_results')}})</span>
       </div>
 
     </q-page-container>
@@ -86,6 +87,7 @@ export default {
   },
   data () {
     return {
+      accountImage: 'https://randomuser.me/api/portraits/thumb/men/62.jpg',
       leftDrawer: true,
       textSearch: '',
       candidates: [],
@@ -94,33 +96,33 @@ export default {
   },
   watch: {
     listingName (value) {
-      this.$store.commit('example/setFilter', {listingType: this.listingName, searchText: this.textSearch})
-      this.pageNumber = this.$store.state.example.pageNumber
+      this.$store.commit('candidates/setFilter', {listingType: this.listingName, searchText: this.textSearch})
+      this.pageNumber = this.$store.state.candidates.pageNumber
     },
     textSearch (value) {
-      this.$store.commit('example/setFilter', {listingType: this.listingName, searchText: this.textSearch})
-      this.pageNumber = this.$store.state.example.pageNumber
+      this.$store.commit('candidates/setFilter', {listingType: this.listingName, searchText: this.textSearch})
+      this.pageNumber = this.$store.state.candidates.pageNumber
     }
   },
   methods: {
     changePage (newVal) {
-      this.$store.commit('example/setPage', newVal)
-      this.pageNumber = this.$store.state.example.pageNumber
+      this.$store.commit('candidates/setPage', newVal)
+      this.pageNumber = this.$store.state.candidates.pageNumber
     },
 
     viewDetails (person) {
-      this.$store.commit('example/setPerson', person)
+      this.$store.commit('candidates/setPerson', person)
       this.$router.push('/info')
     },
 
     onClickAll (person) {
-      this.$store.commit('example/setPersonListing', {email: person.email, listing: 'all'})
+      this.$store.commit('candidates/setPersonListing', {email: person.email, listing: 'all'})
     },
     onClickDone (person) {
-      this.$store.commit('example/setPersonListing', {email: person.email, listing: 'done'})
+      this.$store.commit('candidates/setPersonListing', {email: person.email, listing: 'done'})
     },
     onClickTrash (person) {
-      this.$store.commit('example/setPersonListing', {email: person.email, listing: 'deleted'})
+      this.$store.commit('candidates/setPersonListing', {email: person.email, listing: 'deleted'})
     }
   }
 }
